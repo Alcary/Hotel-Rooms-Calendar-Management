@@ -82,8 +82,8 @@ def center_calendar(window):
     width = window.winfo_width()
     height = window.winfo_height()
     
-    x_offset = (window.winfo_screenwidth() - width) // 6
-    y_offset = (window.winfo_screenheight() - height) // 2
+    x_offset = (window.winfo_screenwidth() - width) // 2
+    y_offset = (window.winfo_screenheight() - height) // 3
 
     window.geometry(f"+{x_offset}+{y_offset}")
 
@@ -128,14 +128,14 @@ def show_calendar(room):
 
         for j, availability in enumerate(record[1:], start=1):
             color = "green" if availability else "red"
-            label = Button(calendar_window, text=f"{j}", bg=color, width=5, height=2, font="YaHei 12", command = lambda day=j: day_button_click(month_name, room, day))
-            label.grid(row=1, column=j, padx=5, pady=5)
+            label = Button(calendar_window, text=f"{j}", bg=color, width=5, height=2, font="YaHei 12", command=lambda day=j: day_button_click(month_name, room, day))
+            label.grid(row= (j - 1) // 7 * 2, column=(j - 1) % 7, padx=5, pady=5)
 
             note_button = ttk.Button(calendar_window, width=5, text="Note", command=lambda day=j: add_note(month_name, room, day, calendar_window), style="rooms.TButton")
-            note_button.grid(row=2, column=j, padx=5, pady=5)
+            note_button.grid(row=(j - 1) // 7 * 2 + 1, column=(j - 1) % 7, padx=5, pady=5)
 
         back_button = Button(calendar_window, background=colour1, foreground=colour4, activebackground=colour2, activeforeground=colour4, highlightthickness=2, highlightbackground=colour2, highlightcolor="WHITE",  text="Back to Main Page", command=calendar_window.destroy)
-        back_button.grid(row=3, column=1, columnspan=len(record), pady=10)
+        back_button.grid(row=(j - 1) // 7 * 2 + 2, column=0, columnspan=len(record), pady=10)
 
 def add_note(month_name, room, day, calendar_window):
             conn = sqlite3.connect("details.db")
